@@ -16,4 +16,6 @@
   :pathname #P"src/"
   :components ((:file "package")
                (:file "d1-input")
-               (:file "d1")))
+               (:file "d1")
+               (:file "d2-input")
+               (:file "d2")))
