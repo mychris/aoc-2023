@@ -12,12 +12,7 @@
                 #:trebuchet-1
                 #:trebuchet-2)
   (:export
-   #:day1-1
    #:trebuchet-1
-   #:day1-2
    #:trebuchet-2))
 
 (in-package #:aoc-2023)
-
-(defun day1-1 () (trebuchet-1))
-(defun day1-2 () (trebuchet-2))
