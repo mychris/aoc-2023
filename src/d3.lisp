@@ -1,4 +1,4 @@
-(in-package #:aoc-2023-d3)
+(in-package #:aoc-2023.d3)
 
 (defun parse-schematic (stream)
   (let ((width 0)

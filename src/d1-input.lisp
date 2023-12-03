@@ -1,4 +1,4 @@
-(in-package #:aoc-2023-d1)
+(in-package #:aoc-2023.d1)
 
 (defvar *d1-input*
   "five3onelxjninenine45

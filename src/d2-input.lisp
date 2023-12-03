@@ -1,6 +1,7 @@
-(in-package #:aoc-2023-d2)
+(in-package #:aoc-2023.d2)
 
-(defvar *d2-input* "Game 1: 12 red, 2 green, 5 blue; 9 red, 6 green, 4 blue; 10 red, 2 green, 5 blue; 8 blue, 9 red
+(defvar *d2-input*
+  "Game 1: 12 red, 2 green, 5 blue; 9 red, 6 green, 4 blue; 10 red, 2 green, 5 blue; 8 blue, 9 red
 Game 2: 3 green, 7 red; 3 blue, 5 red; 2 green, 1 blue, 6 red; 3 green, 2 red, 3 blue
 Game 3: 12 red, 18 blue, 3 green; 14 red, 4 blue, 2 green; 4 green, 15 red
 Game 4: 14 blue, 8 red, 10 green; 7 green, 9 blue, 4 red; 4 green, 5 red

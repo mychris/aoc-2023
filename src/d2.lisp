@@ -1,4 +1,4 @@
-(in-package #:aoc-2023-d2)
+(in-package #:aoc-2023.d2)
 
 (defun test-round (round configuration)
   (loop :for (cube num) :on round :by #'cddr
@@ -57,5 +57,3 @@
                                                         rounds
                                                         :initial-value nil))))
                       stream))
-
-

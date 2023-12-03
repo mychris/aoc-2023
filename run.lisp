@@ -1,12 +1,19 @@
 (ql:quickload "aoc-2023" :verbose nil :silent t)
 
-(cl:princ (format nil "Advent of Code 2023~&"))
+(defun external-symbols (package-designator)
+  (let (symbols)
+    (do-external-symbols (s package-designator)
+      (push s symbols))
+    (sort symbols #'string<)))
 
-(cl:princ (format nil "Day 2: Trebuchet?! ~S~&"
-                  (cons (aoc-2023:trebuchet-1) (aoc-2023:trebuchet-2))))
+(cl:princ (format nil "~A~&" (documentation (find-package :aoc-2023) t)))
 
-(cl:princ (format nil "Day 2: Cube Conundrum ~S~&"
-                  (cons (aoc-2023:cube-conundrum-1) (aoc-2023:cube-conundrum-2))))
-
-(cl:princ (format nil "Day 3: Gear Ratios ~S~&"
-                  (cons (aoc-2023:gear-ratios-1) (aoc-2023:gear-ratios-2))))
+(mapc #'princ
+      (loop :for day :upfrom 1
+            :for package = (find-package (format nil "AOC-2023.D~A" day))
+            :while package
+            :collect (let* ((symbols (external-symbols package)))
+                       (format nil "~A ~S~&"
+                               (documentation package t)
+                               (cons (funcall (nth 0 symbols))
+                                     (funcall (nth 1 symbols)))))))

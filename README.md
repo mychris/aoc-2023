@@ -7,7 +7,7 @@ Developed using `sbcl` but should work with every Common Lisp implementation.
 ```
 * (ql:quickload "aoc-2023")
 * (aoc-2023:trebuchet-1)
-* (describe (find-package "AOC-2023") t)
+* (describe (find-package :aoc-2023) t)
 ```
 
 Use `run.lisp` to run everything:

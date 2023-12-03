@@ -1,4 +1,4 @@
-(in-package #:aoc-2023-d1)
+(in-package #:aoc-2023.d1)
 
 (defvar *spelled-numbers* (list (cons 1 "one")
                                 (cons 2 "two")
