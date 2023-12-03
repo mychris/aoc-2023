@@ -1,7 +1,3 @@
-;;;; -*- mode: lisp; coding: utf-8 -*-
-;;;; system goingto goingto.asd
-;;;;
-
 (defpackage #:aoc-2023-system
   (:use #:cl #:asdf))
 (in-package #:aoc-2023-system)
@@ -18,4 +14,6 @@
                (:file "d1-input")
                (:file "d1")
                (:file "d2-input")
-               (:file "d2")))
+               (:file "d2")
+               (:file "d3-input")
+               (:file "d3")))
