@@ -14,11 +14,12 @@ Use `run.lisp` to run everything:
 
 * sbcl `sbcl --noinform --non-interactive --eval '(load "run.lisp")'`
 * clisp `clisp -q -q -x '(progn (load "run.lisp" :verbose nil) (quit))'`
-* ccl `ccl --eval '(progn (load "run.lisp") (quit))'`
+* clozure cl `ccl --eval '(progn (load "run.lisp") (quit))'`
 * cmucl `cmucl -quiet -eval '(progn (load "run.lisp") (quit))'`
 * ecl `ecl -q --eval '(progn (load "run.lisp") (quit))'`
-* clasp `clasp --quit --eval '(load "run.lisp")'`
+* clasp `clasp --noinform --quit --eval '(load "run.lisp")'`
 * abcl `abcl --noinform --nosystem --batch --eval '(load "run.lisp")'`
+* allegro cl `alisp -e '(setq *load-verbose* nil)' -L ~/.clinit.cl -L run.lisp --kill`
 
 # Links
 
