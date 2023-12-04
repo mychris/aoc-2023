@@ -17,6 +17,7 @@
 (defpackage-aoc d1 trebuchet "Day 1: Trebuchet?!")
 (defpackage-aoc d2 cube-conundrum "Day 2: Cube Conundrum")
 (defpackage-aoc d3 gear-ratios "Day 3: Gear Ratios")
+(defpackage-aoc d4 scratchcards "Day 4: Scratchcards")
 
 (in-package #:aoc-2023)
 

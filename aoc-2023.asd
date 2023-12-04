@@ -16,4 +16,6 @@
                (:file "d2-input")
                (:file "d2")
                (:file "d3-input")
-               (:file "d3")))
+               (:file "d3")
+               (:file "d4-input")
+               (:file "d4")))
