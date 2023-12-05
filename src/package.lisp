@@ -18,6 +18,7 @@
 (defpackage-aoc d2 cube-conundrum "Day 2: Cube Conundrum")
 (defpackage-aoc d3 gear-ratios "Day 3: Gear Ratios")
 (defpackage-aoc d4 scratchcards "Day 4: Scratchcards")
+(defpackage-aoc d5 if-you-give-a-seed-a-fertilizer "Day 5: If You Give A Seed A Fertilizer")
 
 (in-package #:aoc-2023)
 
