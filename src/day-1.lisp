@@ -1,4 +1,13 @@
-(in-package #:aoc-2023.d1)
+(defpackage #:aoc-2023/day-1
+  (:use #:cl)
+  (:export #:trebuchet-1
+           #:trebuchet-2)
+  (:import-from #:aoc-2023/day-1-input
+                #:*input*))
+
+(in-package #:aoc-2023/day-1)
+
+(setf (documentation *package* t) "Day 1: Trebuchet?!")
 
 (defvar *spelled-numbers* (list (cons 1 "one")
                                 (cons 2 "two")
@@ -38,16 +47,18 @@
         :collect (funcall accum (find-first-last predicate line))))
 
 (defun trebuchet-1 (&optional stream)
+  "55123"
   (reduce #'+ (trebuchet-get-from-lines
                #'trebuchet-digit
                #'trebuchet-accum-digits
-               (or stream (make-string-input-stream *d1-input*)))))
+               (or stream (make-string-input-stream *input*)))))
 
 (defun trebuchet-2 (&optional stream)
+  "55260"
   (reduce #'+ (trebuchet-get-from-lines
                #'(lambda (line idx)
                    (or
                     (trebuchet-digit line idx)
                     (trebuchet-spelled line idx)))
                #'trebuchet-accum-digits
-               (or stream (make-string-input-stream *d1-input*)))))
+               (or stream (make-string-input-stream *input*)))))

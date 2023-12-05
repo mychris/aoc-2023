@@ -1,4 +1,13 @@
-(in-package #:aoc-2023.d4)
+(defpackage #:aoc-2023/day-4
+  (:use #:cl)
+  (:export #:scratchcards-1
+           #:scratchcards-2)
+  (:import-from #:aoc-2023/day-4-input
+                #:*input*))
+
+(in-package #:aoc-2023/day-4)
+
+(setf (documentation *package* t) "Day 4: Scratchcards")
 
 (defun read-number-list (input-str)
   (loop :with number = 0
@@ -26,12 +35,13 @@
 (defun calc-points-of-scratchcard (card)
   (ash 1 (1- (number-of-matches card))))
 
-(defun scratchcards-1 (&optional stream)
-  (reduce #'+ (map 'list #'calc-points-of-scratchcard
-                   (read-scratchcards (or stream (make-string-input-stream *d4-input*))))))
+(defun scratchcards-1 (&optional (stream (make-string-input-stream *input*)))
+  "17803"
+  (reduce #'+ (map 'list #'calc-points-of-scratchcard (read-scratchcards stream))))
 
-(defun scratchcards-2 (&optional stream)
-  (loop :with all-cards = (read-scratchcards (or stream (make-string-input-stream *d4-input*)))
+(defun scratchcards-2 (&optional (stream (make-string-input-stream *input*)))
+  "5554894"
+  (loop :with all-cards = (read-scratchcards stream)
         :with each-card-times = (make-array (length all-cards) :initial-element 1)
         :for idx :upfrom 0 :below (length all-cards)
         :for n-matches = (number-of-matches (aref all-cards idx))

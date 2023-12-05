@@ -1,6 +1,10 @@
-(in-package #:aoc-2023.d1)
+(defpackage #:aoc-2023/day-1-input
+  (:use #:cl)
+  (:export #:*input*))
 
-(defvar *d1-input*
+(in-package #:aoc-2023/day-1-input)
+
+(defvar *input*
   "five3onelxjninenine45
 six9mnfjmtsf2kfmznkxntninesevenrpmfjfpgsk
 9vkrmbpnine5two5cbktwo6

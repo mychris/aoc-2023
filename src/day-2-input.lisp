@@ -1,6 +1,10 @@
-(in-package #:aoc-2023.d2)
+(defpackage #:aoc-2023/day-2-input
+  (:use #:cl)
+  (:export #:*input*))
 
-(defvar *d2-input*
+(in-package #:aoc-2023/day-2-input)
+
+(defvar *input*
   "Game 1: 12 red, 2 green, 5 blue; 9 red, 6 green, 4 blue; 10 red, 2 green, 5 blue; 8 blue, 9 red
 Game 2: 3 green, 7 red; 3 blue, 5 red; 2 green, 1 blue, 6 red; 3 green, 2 red, 3 blue
 Game 3: 12 red, 18 blue, 3 green; 14 red, 4 blue, 2 green; 4 green, 15 red
