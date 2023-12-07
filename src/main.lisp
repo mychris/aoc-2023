@@ -5,7 +5,8 @@
         #:aoc-2023/day-3
         #:aoc-2023/day-4
         #:aoc-2023/day-5
-        #:aoc-2023/day-6))
+        #:aoc-2023/day-6
+        #:aoc-2023/day-7))
 
 (in-package #:aoc-2023)
 
