@@ -42,19 +42,18 @@
           (incf (cdadr counted-hand) (cdr (nth 0 counted-hand)))
           (incf (cdar counted-hand) (cdr (find #\* counted-hand :key #'car))))
       (setq counted-hand (remove #\* counted-hand :key #'car)))
-    (cond
-      ((= 1 (length counted-hand))
-       6)
-      ((= 4 (cdr (nth 0 counted-hand)))
-       5)
-      ((= 2 (length counted-hand))
-       4)
-      ((= 3 (cdr (nth 0 counted-hand)))
-       3)
-      ((= 2 (cdr (nth 0 counted-hand)))
-       (if (= 2 (cdr (nth 1 counted-hand))) 2 1))
-      (t
-       0))))
+    (cond ((= 1 (length counted-hand))
+           6)
+          ((= 4 (cdr (nth 0 counted-hand)))
+           5)
+          ((= 2 (length counted-hand))
+           4)
+          ((= 3 (cdr (nth 0 counted-hand)))
+           3)
+          ((= 2 (cdr (nth 0 counted-hand)))
+           (if (= 2 (cdr (nth 1 counted-hand))) 2 1))
+          (t
+           0))))
 
 (defun comp-hands (left right)
   (let ((left-type (hand-type left))
@@ -64,12 +63,11 @@
         (loop :for l :across left
               :for r :across right
               :if (char/= l r)
-                :return (< (card-value l) (card-value r))
-              :finally (return nil)))))
+                :return (< (card-value l) (card-value r))))))
 
 (defun calc-winnings (hands-values)
   (loop :for h :in (sort hands-values #'comp-hands :key #'car)
-        :for x :from 1
+        :for x :upfrom 1
         :sum (* x (cdr h))))
 
 (defun camel-cards-1 (&optional (stream (make-string-input-stream *input*)))
@@ -78,6 +76,4 @@
 
 (defun camel-cards-2 (&optional (stream (make-string-input-stream *input*)))
   "250577259"
-  (calc-winnings
-   (parse-input stream (lambda (hand)
-                         (map 'string (lambda (chr) (if (char= #\J chr) #\* chr)) hand)))))
+  (calc-winnings (parse-input stream (lambda (hand) (substitute #\* #\J hand)))))
