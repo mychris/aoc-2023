@@ -20,10 +20,11 @@
           :collect s :into symbols
         :finally (return (sort symbols #'string<))))
 
-(loop :for year :upfrom 2023
+(loop :with start-real-time = (get-internal-real-time)
+      :and start-run-time = (get-internal-run-time)
+      :for year :upfrom 2023
       :for year-package = (find-package (format nil "AOC-~A" year))
-      :unless year-package
-        :return nil
+      :while year-package
       :do
          (princ (format nil "~A~&" (documentation year-package t)))
          (loop :for package :in (get-packages
@@ -42,4 +43,9 @@
                                     (if (or (/= r1 e1)
                                             (/= r2 e2))
                                         " :("
-                                        ""))))))
+                                        "")))))
+      :finally (princ (format nil "REAL-TIME: ~,3fs~&RUN-TIME:  ~,3fs~&"
+                              (/ (- (get-internal-real-time) start-real-time)
+                                 internal-time-units-per-second)
+                              (/ (- (get-internal-run-time) start-run-time)
+                                 internal-time-units-per-second))))

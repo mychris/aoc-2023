@@ -7,6 +7,7 @@
 
 (in-package #:aoc-2023/day-4)
 
+(declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 4: Scratchcards")
 
 (defun read-number-list (input-str)
@@ -32,12 +33,11 @@
 (defun number-of-matches (card)
   (loop :for num :in (nth 1 card) :sum (if (member num (nth 0 card)) 1 0)))
 
-(defun calc-points-of-scratchcard (card)
-  (ash 1 (1- (number-of-matches card))))
-
 (defun scratchcards-1 (&optional (stream (make-string-input-stream *input*)))
   "17803"
-  (reduce #'+ (map 'list #'calc-points-of-scratchcard (read-scratchcards stream))))
+  (reduce #'+ (map 'list (lambda (card)
+                           (ash 1 (1- (number-of-matches card))))
+                   (read-scratchcards stream))))
 
 (defun scratchcards-2 (&optional (stream (make-string-input-stream *input*)))
   "5554894"

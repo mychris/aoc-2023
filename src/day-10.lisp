@@ -7,10 +7,11 @@
 
 (in-package #:aoc-2023/day-10)
 
+(declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 10: Pipe Maze")
 
 (defun parse (stream)
-  (loop :with result = (make-array 0 :fill-pointer 0 :adjustable t)
+  (loop :with result = (make-array 0 :fill-pointer 0 :adjustable t :element-type 'character)
         :and width = 0
         :for line = (read-line stream nil nil)
         :while line
@@ -19,15 +20,16 @@
         :finally (return (values result width (truncate (length result) width)))))
 
 (defun subst-one-cell (chr pos width)
-  (cond ((char= #\S chr) (cons nil nil))
-        ((char= #\| chr) (cons (- pos width) (+ pos width)))
-        ((char= #\- chr) (cons (1- pos) (1+ pos)))
-        ((char= #\L chr) (cons (- pos width) (1+ pos)))
-        ((char= #\J chr) (cons (- pos width) (1- pos)))
-        ((char= #\7 chr) (cons (1- pos) (+ pos width)))
-        ((char= #\F chr) (cons (1+ pos) (+ pos width)))
-        ((char= #\. chr) (cons -1 -1))
-        (t (error "Invalid char ~A" chr))))
+  (case chr
+    (#\S (cons nil nil))
+    (#\| (cons (- pos width) (+ pos width)))
+    (#\- (cons (1- pos) (1+ pos)))
+    (#\L (cons (- pos width) (1+ pos)))
+    (#\J (cons (- pos width) (1- pos)))
+    (#\7 (cons (1- pos) (+ pos width)))
+    (#\F (cons (1+ pos) (+ pos width)))
+    (#\. (cons -1 -1))
+    (t (error "Invalid char ~A" chr))))
 
 (defun subst-cells-to-new-vec (maze width)
   (loop :with result = (make-array (length maze) :initial-element 0)
@@ -37,14 +39,20 @@
 
 (defun flood-fill (maze width height start chr predicate)
   (loop :with stack = (list start)
+        :and end = (* width height)
         :for position = (pop stack)
         :while position
-        :if (and (<= 0 position (1- (* width height)))
-                 (funcall predicate (aref maze position)))
+        :when (funcall predicate (aref maze position))
           :do (setf (aref maze position) chr)
-              (setq stack (append (list (1+ position) (1- position)
-                                        (+ position width) (- position width))
-                                  stack))
+              ;; Not very clean, but seems to be good enough
+              (when (< (1+ position) end)
+                (push (1+ position) stack))
+              (when (< 0 (1- position))
+                (push (1- position) stack))
+              (when (< (+ position width) end)
+                (push (+ position width) stack))
+              (when (< 0 (- position width))
+                (push (- position width) stack))
         :finally (return maze)))
 
 (defun walk-border (maze width height func)
@@ -56,6 +64,7 @@
         :finally (return maze)))
 
 (defun walk-maze-loop (maze from-pos)
+  ;; not very clean, but seems to be good enough
   (loop :with start-pos = from-pos
         :and to-pos = (car (aref maze from-pos))
         :if (and (/= from-pos (car (aref maze to-pos)))
@@ -70,7 +79,7 @@
 (defun find-loop (maze width height)
   (declare (ignore height))
   (loop :with start-pos = (position #\S maze)
-        :with subst-maze = (subst-cells-to-new-vec maze width)
+        :and subst-maze = (subst-cells-to-new-vec maze width)
         :for start-tile :in '(#\- #\| #\F #\J #\L #\7)
         :do (setf (aref maze start-pos) start-tile)
             (setf (aref subst-maze start-pos) (subst-one-cell start-tile start-pos width))
@@ -80,36 +89,34 @@
 
 (defun stretch-maze (maze width height &key (initial-element nil))
   (loop :with new-width = (* 2 width)
-        :with new-height = (* 2 height)
-        :with result = (make-array (* new-width new-height) :initial-element initial-element)
+        :and new-height = (* 2 height)
+        :with result = (make-array (* new-width new-height)
+                                   :initial-element initial-element
+                                   :element-type 'character)
         :for row :upfrom 0 :below height
         :do (loop :for col :upfrom 0 :below width
                   :for old-pos = (+ col (* width row))
                   :for new-pos = (+ (* 2 col) (* new-width (* 2 row)))
-                  :do (cond ((char= (aref maze old-pos) #\|)
-                             (setf (aref result new-pos) #\|)
-                             (setf (aref result (+ new-width new-pos)) #\|))
-                            ((char= (aref maze old-pos) #\-)
-                             (setf (aref result new-pos) #\-)
-                             (setf (aref result (1+ new-pos)) #\-))
-                            ((char= (aref maze old-pos) #\L)
-                             (setf (aref result new-pos) #\L)
-                             (setf (aref result (1+ new-pos)) #\-))
-                            ((char= (aref maze old-pos) #\J)
-                             (setf (aref result new-pos) #\J))
-                            ((char= (aref maze old-pos) #\7)
-                             (setf (aref result new-pos) #\7)
-                             (setf (aref result (+ new-width new-pos)) #\|))
-                            ((char= (aref maze old-pos) #\F)
-                             (setf (aref result new-pos) #\F)
-                             (setf (aref result (1+ new-pos)) #\-)
-                             (setf (aref result (+ new-width new-pos)) #\|))))
+                  :do (case (aref maze old-pos)
+                        (#\| (progn (setf (aref result new-pos) #\|)
+                                    (setf (aref result (+ new-width new-pos)) #\|)))
+                        (#\- (progn (setf (aref result new-pos) #\-)
+                                    (setf (aref result (1+ new-pos)) #\-)))
+                        (#\L (progn (setf (aref result new-pos) #\L)
+                                    (setf (aref result (1+ new-pos)) #\-)))
+                        (#\J (progn (setf (aref result new-pos) #\J)))
+                        (#\7 (progn (setf (aref result new-pos) #\7)
+                                    (setf (aref result (+ new-width new-pos)) #\|)))
+                        (#\F (progn (setf (aref result new-pos) #\F)
+                                    (setf (aref result (1+ new-pos)) #\-)
+                                    (setf (aref result (+ new-width new-pos)) #\|)))))
         :finally (return result)))
 
 (defun shrink-maze (maze width height)
   (loop :with new-width = (/ width 2)
         :with new-height = (/ height 2)
-        :with result = (make-array (* new-width new-height) :initial-element #\.)
+        :with result = (make-array (* new-width new-height) :initial-element #\.
+                                                            :element-type 'character)
         :for row :upfrom 0 :below new-height
         :do (loop :for col :upfrom 0 :below new-width
                   :for old-pos = (+ (* 2 col) (* width (* 2 row)))
@@ -125,7 +132,8 @@
   "445"
   (multiple-value-bind (maze width height) (parse stream)
     (let* ((cells-in-loop-lookup
-             (loop :with result = (make-array (length maze) :initial-element nil)
+             (loop :with result = (make-array (length maze) :initial-element nil
+                                                            :element-type 'boolean)
                    :for cell :in (find-loop maze width height)
                    :do (setf (aref result cell) t)
                    :finally (return result)))
@@ -136,9 +144,11 @@
                                                    (aref maze pos)
                                                    #\.))
                    :finally (return result)))
+           ;; stretch the maze so we can find places to 'squeeze between pipes'
            (stretched-new-maze-only-loop
              (stretch-maze new-maze-only-loop width height :initial-element #\I)))
       (walk-border stretched-new-maze-only-loop (* 2 width) (* 2 height)
                    (lambda (maze width height pos)
-                     (flood-fill maze width height pos #\O (lambda (chr) (char= #\I chr)))))
+                     (when (char= #\I (aref maze pos))
+                       (flood-fill maze width height pos #\O (lambda (chr) (char= #\I chr))))))
       (count #\I (shrink-maze stretched-new-maze-only-loop (* 2 width) (* 2 height))))))

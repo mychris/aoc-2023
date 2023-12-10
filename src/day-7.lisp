@@ -7,13 +7,8 @@
 
 (in-package #:aoc-2023/day-7)
 
+(declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 7: Camel Cards")
-
-(defun parse-input (stream &optional (map-hand #'identity))
-  (loop :for line = (read-line stream nil nil)
-        :while line
-        :collect (cons (funcall map-hand (subseq line 0 (position #\Space line)))
-                       (parse-integer (subseq line (position #\Space line))))))
 
 (defun card-value (card)
   (case card
@@ -27,7 +22,7 @@
 
 (defun count-same-cards (hand)
   (sort (loop :for card :across hand
-              :if (member card result :key #'car)
+              :if (find card result :key #'car)
                 :do (loop :for r :in result :if (char= (car r) card) :do (incf (cdr r)))
               :else
                 :collect (cons card 1) :into result
@@ -35,9 +30,9 @@
         #'> :key #'cdr))
 
 (defun hand-type (hand)
-  (let ((counted-hand (count-same-cards hand)))
-    (when (and (member #\* counted-hand :key #'car)
-               (> (length counted-hand) 1))
+  (let* ((counted-hand (count-same-cards hand)))
+    (when (and (> (length counted-hand) 1)
+               (find #\* counted-hand :key #'car))
       (if (char= #\* (car (nth 0 counted-hand)))
           (incf (cdadr counted-hand) (cdr (nth 0 counted-hand)))
           (incf (cdar counted-hand) (cdr (find #\* counted-hand :key #'car))))
@@ -55,20 +50,28 @@
           (t
            0))))
 
+(defun parse-input (stream &optional (map-hand #'identity))
+  (loop :for line = (read-line stream nil nil)
+        :while line
+        :collect (let ((hand (funcall map-hand (subseq line 0 (position #\Space line)))))
+                   (list hand
+                         (hand-type hand)
+                         (parse-integer line :start (position #\Space line))))))
+
 (defun comp-hands (left right)
-  (let ((left-type (hand-type left))
-        (right-type (hand-type right)))
+  (let ((left-type (nth 1 left))
+        (right-type (nth 1 right)))
     (if (/= left-type right-type)
         (< left-type right-type)
-        (loop :for l :across left
-              :for r :across right
+        (loop :for l :across (nth 0 left)
+              :for r :across (nth 0 right)
               :if (char/= l r)
                 :return (< (card-value l) (card-value r))))))
 
 (defun calc-winnings (hands-values)
-  (loop :for h :in (sort hands-values #'comp-hands :key #'car)
+  (loop :for h :in (sort hands-values #'comp-hands)
         :for x :upfrom 1
-        :sum (* x (cdr h))))
+        :sum (* x (nth 2 h))))
 
 (defun camel-cards-1 (&optional (stream (make-string-input-stream *input*)))
   "252295678"
@@ -76,4 +79,6 @@
 
 (defun camel-cards-2 (&optional (stream (make-string-input-stream *input*)))
   "250577259"
-  (calc-winnings (parse-input stream (lambda (hand) (substitute #\* #\J hand)))))
+  (calc-winnings (parse-input stream (lambda (hand)
+                                       (nsubstitute #\* #\J hand)
+                                       hand))))

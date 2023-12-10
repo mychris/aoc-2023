@@ -7,58 +7,47 @@
 
 (in-package #:aoc-2023/day-1)
 
+(declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 1: Trebuchet?!")
 
-(defvar *spelled-numbers* (list (cons 1 "one")
-                                (cons 2 "two")
-                                (cons 3 "three")
-                                (cons 4 "four")
-                                (cons 5 "five")
-                                (cons 6 "six")
-                                (cons 7 "seven")
-                                (cons 8 "eight")
-                                (cons 9 "nine")))
+(defvar *spelled-numbers* '((1 . "one") (2 . "two") (3 . "three")
+                            (4 . "four") (5 . "five") (6 . "six")
+                            (7 . "seven") (8 . "eight") (9 . "nine")))
 
-(defun trebuchet-spelled (line idx)
-  (car
-   (find-if #'(lambda (spelled-number)
-                (and (>= idx (1- (length (cdr spelled-number))))
-                     (string= line (cdr spelled-number)
-                              :start1 (- idx (1- (length (cdr spelled-number))))
-                              :end1 (1+ idx))))
-            *spelled-numbers*)))
+(defun spelled-at-p (line idx)
+  (loop :for spelled-number :in *spelled-numbers*
+        :if (and (char= (aref (cdr spelled-number) 0) (aref line idx))
+                 (string= line (cdr spelled-number)
+                          :start1 idx
+                          :end1 (min (length line) (+ idx (length (cdr spelled-number))))))
+          :return (car spelled-number)))
 
-(defun trebuchet-digit (line idx)
+(defun digit-at-p (line idx)
   (digit-char-p (aref line idx)))
 
 (defun find-first-last (predicate line)
-  (let ((result-list (loop :for x :from 0 :below (length line)
-                           :for result = (funcall predicate line x)
-                           :if result
-                             :collect result)))
-    (cons (first result-list) (car (last result-list)))))
+  (cons (loop :for index :from 0 :below (length line)
+              :for result = (funcall predicate line index)
+              :if result :return result)
+        (loop :for index :downfrom (1- (length line)) :to 0
+              :for result = (funcall predicate line index)
+              :if result :return result)))
 
-(defun trebuchet-accum-digits (c)
+(defun accum-digits (c)
   (+ (* 10 (car c)) (cdr c)))
 
-(defun trebuchet-get-from-lines (predicate accum stream)
-  (loop :for line = (read-line stream nil nil)
-        :while line
-        :collect (funcall accum (find-first-last predicate line))))
+(defun parse-from-lines (predicate stream)
+  (loop :while (peek-char nil stream nil)
+        :collect (find-first-last predicate (read-line stream))))
 
-(defun trebuchet-1 (&optional stream)
+(defun trebuchet-1 (&optional (stream (make-string-input-stream *input*)))
   "55123"
-  (reduce #'+ (trebuchet-get-from-lines
-               #'trebuchet-digit
-               #'trebuchet-accum-digits
-               (or stream (make-string-input-stream *input*)))))
+  (reduce #'+ (map 'list #'accum-digits (parse-from-lines #'digit-at-p stream))))
 
-(defun trebuchet-2 (&optional stream)
+(defun trebuchet-2 (&optional (stream (make-string-input-stream *input*)))
   "55260"
-  (reduce #'+ (trebuchet-get-from-lines
-               #'(lambda (line idx)
-                   (or
-                    (trebuchet-digit line idx)
-                    (trebuchet-spelled line idx)))
-               #'trebuchet-accum-digits
-               (or stream (make-string-input-stream *input*)))))
+  (reduce #'+ (map 'list #'accum-digits
+                   (parse-from-lines #'(lambda (line idx)
+                                         (or (digit-at-p line idx)
+                                             (spelled-at-p line idx)))
+                                     stream))))

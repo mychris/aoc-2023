@@ -7,6 +7,7 @@
 
 (in-package #:aoc-2023/day-2)
 
+(declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 2: Cube Conundrum")
 
 (defun test-round (round configuration)
@@ -45,9 +46,8 @@
             (cadr s))))
 
 (defun apply-sum-games-in (fun stream)
-  (loop :for line = (read-line stream nil nil)
-        :while line
-        :sum (multiple-value-bind (game rounds) (split-out-game line)
+  (loop :while (peek-char nil stream nil)
+        :sum (multiple-value-bind (game rounds) (split-out-game (read-line stream))
                (funcall fun game (map 'list #'parse-round (split-out-rounds rounds))))))
 
 (defun cube-conundrum-1 (&optional (stream (make-string-input-stream *input*))

@@ -7,6 +7,7 @@
 
 (in-package #:aoc-2023/day-3)
 
+(declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 3: Gear Ratios")
 
 (defun parse-schematic (stream)

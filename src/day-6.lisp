@@ -7,17 +7,19 @@
 
 (in-package #:aoc-2023/day-6)
 
+(declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 6: Wait For It")
 
 (defun parse-ints (str)
   (loop :for idx :from 0 :below (length str)
-        :append (multiple-value-bind (number end)
-                    (parse-integer str :start idx :junk-allowed t)
-                  (setq idx end)
-                  (if number (list number) number))))
+        :if (digit-char-p (char str idx))
+          :collect (multiple-value-bind (number end)
+                       (parse-integer str :start idx :junk-allowed t)
+                     (setq idx end)
+                     number)))
 
 (defun concatenate-numbers (number-seq)
-  (reduce (lambda (x y) (+ (* x (expt 10 (1+ (truncate (log y 10))))) y)) number-seq))
+  (reduce (lambda (x y) (+ (* x (expt 10 (ceiling (log y 10)))) y)) number-seq))
 
 (defun winning-strategies (time distance)
   "Return cons cell with (minimum . maximum) time to hold for a win.
