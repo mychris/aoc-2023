@@ -21,6 +21,11 @@ Use `run.lisp` to run everything:
 * abcl `abcl --noinform --nosystem --batch --eval '(load "run.lisp")'`
 * allegro cl `alisp -e '(setq *load-verbose* nil)' -L ~/.clinit.cl -L run.lisp --kill`
 
+Simple benchmarking using `benchmark.lisp`:
+
+* sbcl `sbcl --noinform --non-interactive --eval '(load "benchmark.lisp")'`
+* sbcl `sbcl --noinform --non-interactive --eval '(defvar *func* "trebuchet-1")' --eval '(load "benchmark.lisp")'`
+
 # Links
 
 * https://adventofcode.com/2023
