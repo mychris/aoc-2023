@@ -20,32 +20,28 @@
           :collect s :into symbols
         :finally (return (sort symbols #'string<))))
 
-(loop :with start-real-time = (get-internal-real-time)
-      :and start-run-time = (get-internal-run-time)
-      :for year :upfrom 2023
-      :for year-package = (find-package (format nil "AOC-~A" year))
-      :while year-package
-      :do
-         (princ (format nil "~A~&" (documentation year-package t)))
-         (loop :for package :in (get-packages
-                                 (lambda (p) (and (search "AOC" (package-name p))
-                                                  (search "DAY" (package-name p))
-                                                  (not (search "INPUT" (package-name p))))))
-               :for symbols = (external-function-symbols package)
-               :while package
-               :do (let ((r1 (funcall (first symbols)))
-                         (r2 (funcall (second symbols)))
-                         (e1 (parse-integer (documentation (first symbols) 'function)))
-                         (e2 (parse-integer (documentation (second symbols) 'function))))
-                     (princ (format nil "~A ~S~A~&"
-                                    (documentation package t)
-                                    (cons r1 r2)
-                                    (if (or (/= r1 e1)
-                                            (/= r2 e2))
-                                        " :("
-                                        "")))))
-      :finally (princ (format nil "REAL-TIME: ~,3fs~&RUN-TIME:  ~,3fs~&"
-                              (/ (- (get-internal-real-time) start-real-time)
-                                 internal-time-units-per-second)
-                              (/ (- (get-internal-run-time) start-run-time)
-                                 internal-time-units-per-second))))
+(let ((start-real-time (get-internal-real-time))
+      (start-run-time (get-internal-run-time)))
+  (princ (format nil "~A~&" (documentation (find-package "AOC-2023") t)))
+  (loop :for package :in (get-packages
+                          (lambda (p) (and (search "AOC" (package-name p))
+                                           (search "DAY" (package-name p))
+                                           (not (search "INPUT" (package-name p))))))
+        :for symbols = (external-function-symbols package)
+        :while package
+        :do (let ((r1 (funcall (first symbols)))
+                  (r2 (funcall (second symbols)))
+                  (e1 (parse-integer (or (documentation (first symbols) 'function) "0")))
+                  (e2 (parse-integer (or (documentation (second symbols) 'function) "0"))))
+              (princ (format nil "~A ~S~A~&"
+                             (documentation package t)
+                             (cons r1 r2)
+                             (if (or (/= r1 e1)
+                                     (/= r2 e2))
+                                 " :("
+                                 "")))))
+  (princ (format nil "REAL-TIME: ~,3fs~&RUN-TIME:  ~,3fs~&"
+                 (/ (- (get-internal-real-time) start-real-time)
+                    internal-time-units-per-second)
+                 (/ (- (get-internal-run-time) start-run-time)
+                    internal-time-units-per-second))))

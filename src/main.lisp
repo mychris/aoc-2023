@@ -10,7 +10,8 @@
         #:aoc-2023/day-8
         #:aoc-2023/day-9
         #:aoc-2023/day-10
-        #:aoc-2023/day-11))
+        #:aoc-2023/day-11
+        #:aoc-2023/day-12))
 
 (in-package #:aoc-2023)
 
