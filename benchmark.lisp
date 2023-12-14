@@ -18,7 +18,7 @@
     (when (or (null sym)
               (not (fboundp sym)))
       (error "Can not find ~A" func))
-    (dotimes (count 1000)
+    (dotimes (count 50)
       (benchmark:with-sampling (timer)
         (funcall sym)))
     (princ (format nil "~A~&" func))
