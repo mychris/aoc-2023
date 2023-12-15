@@ -7,7 +7,7 @@
 
 (in-package #:aoc-2023/day-14)
 
-(declaim (optimize (speed 0) (debug 3) (safety 3)))
+(declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 14: Parabolic Reflector Dish")
 
 (defun parse-string (stream)
