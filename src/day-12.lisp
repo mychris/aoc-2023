@@ -57,7 +57,7 @@
                                                   0)
                                               (inner (1+ row-pos) conditions-pos 0)))))))
                (gethash (hash-key row-pos conditions-pos grp-count) *memo*)))
-    (inner 0 0 0))))
+      (inner 0 0 0))))
 
 (defmacro dot-or-q (chr) `(or (char= #\. ,chr) (char= #\? ,chr)))
 (defmacro pound-or-q (chr) `(or (char= #\# ,chr) (char= #\? ,chr)))

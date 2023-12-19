@@ -44,11 +44,11 @@
          (hash-value (hash label))
          (box (aref boxes hash-value)))
     (if (null lens)
-      (setq box (remove label box :test #'string= :key #'car))
-      (let ((old (find label box :test #'string= :key #'car)))
-        (if old
-            (setf (cdr old) lens)
-            (setq box (append box (list (cons label lens)))))))
+        (setq box (remove label box :test #'string= :key #'car))
+        (let ((old (find label box :test #'string= :key #'car)))
+          (if old
+              (setf (cdr old) lens)
+              (setq box (append box (list (cons label lens)))))))
     (setf (aref boxes hash-value) box)))
 
 (defun lens-library-1 (&optional (stream (make-string-input-stream *day-15-input*)))

@@ -40,24 +40,24 @@
      (loop :for value :in input :append (almanac-map map-list value)))
     ((typep input 'cons)
      (loop :with (input-start input-range) = (list (car input) (cdr input))
-                 :for (dest-start src-start range) :in map-list
-                 :if (and (< input-start src-start)
-                          (<= src-start (1- (+ input-start input-range))))
-                   :collect (cons input-start (- src-start input-start))
-                     :into result
-                     :and :do
-                       (incf input-start (cdar result))
-                       (decf input-range (cdar result))
-                 :if (<= src-start input-start (1- (+ src-start range)))
-                   :collect (cons (+ dest-start (- input-start src-start))
-                                  (min (- range (- input-start src-start)) input-range))
-                     :into result
-                     :and :do
-                       (incf input-start (cdar result))
-                       (decf input-range (cdar result))
-                 :finally (when (> input-range 0)
-                            (setq result (append (list (cons input-start input-range)) result)))
-                 :finally (return (sort result #'< :key #'car))))))
+           :for (dest-start src-start range) :in map-list
+           :if (and (< input-start src-start)
+                    (<= src-start (1- (+ input-start input-range))))
+             :collect (cons input-start (- src-start input-start))
+               :into result
+               :and :do
+                 (incf input-start (cdar result))
+                 (decf input-range (cdar result))
+           :if (<= src-start input-start (1- (+ src-start range)))
+             :collect (cons (+ dest-start (- input-start src-start))
+                            (min (- range (- input-start src-start)) input-range))
+               :into result
+               :and :do
+                 (incf input-start (cdar result))
+                 (decf input-range (cdar result))
+           :finally (when (> input-range 0)
+                      (setq result (append (list (cons input-start input-range)) result)))
+           :finally (return (sort result #'< :key #'car))))))
 
 (defun almanac-find-mapping-from (from mappings)
   (find-if (lambda (mapping) (= 0 (or (search from (car mapping)) -1))) mappings))

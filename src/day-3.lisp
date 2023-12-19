@@ -72,7 +72,7 @@
                     (map-symbols (lambda (symbol numbers-around)
                                    (if (or (char/= #\* symbol)
                                            (/= 2 (length numbers-around)))
-                                         0
-                                         (* (nth 0 numbers-around) (nth 1 numbers-around))))
+                                       0
+                                       (* (nth 0 numbers-around) (nth 1 numbers-around))))
                                  schematic width height))
                   stream))
