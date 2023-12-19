@@ -147,6 +147,7 @@
              (stretch-maze new-maze-only-loop width height :initial-element #\I)))
       (walk-border stretched-new-maze-only-loop (* 2 width) (* 2 height)
                    (lambda (maze width height pos)
-                     (when (char= #\I (aref maze pos))
+                     (when (and (< pos (* width height))
+                                (char= #\I (aref maze pos)))
                        (flood-fill maze width height pos #\O (lambda (chr) (char= #\I chr))))))
       (count #\I (shrink-maze stretched-new-maze-only-loop (* 2 width) (* 2 height))))))
