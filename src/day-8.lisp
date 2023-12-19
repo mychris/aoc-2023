@@ -1,13 +1,13 @@
-(defpackage #:aoc-2023/day-8
+(defpackage #:aoc-2023/src/day-8
   (:use #:cl)
   (:export #:haunted-wasteland-1
            #:haunted-wasteland-2)
-  (:import-from #:aoc-2023/day-8-input
-                #:*input*))
+  (:import-from #:aoc-2023-data
+                #:*day-8-input*))
 
-(in-package #:aoc-2023/day-8)
+(in-package #:aoc-2023/src/day-8)
 
-(declaim (optimize (speed 3) (debug 0) (safety 0)))
+(declaim (optimize (speed 0) (debug 3) (safety 3)))
 (setf (documentation *package* t) "Day 8: Haunted Wasteland")
 
 (defun read-node (line start)
@@ -42,21 +42,19 @@
                              (#\R (nth 2 start))))))
 
 (defun prime-factors (x)
-  (loop :for n :upfrom 3 :by 2
+  (loop :for n :upfrom 2 :by 1
         :while (/= x 1)
         :if (= 0 (mod x n))
           :append (loop :while (= 0 (mod x n))
                         :collect n
                         :do (setq x (/ x n)))))
 
-(defun haunted-wasteland-1 (&optional (stream (make-string-input-stream *input*)))
-  "19783"
+(defun haunted-wasteland-1 (&optional (stream (make-string-input-stream *day-8-input*)))
   (multiple-value-call #'count-steps "AAA" (lambda (cur) (and (char= #\Z (char cur 0))
                                                               (string= cur "ZZZ")))
     (parse stream)))
 
-(defun haunted-wasteland-2 (&optional (stream (make-string-input-stream *input*)))
-  "9177460370549"
+(defun haunted-wasteland-2 (&optional (stream (make-string-input-stream *day-8-input*)))
   (multiple-value-bind (navigation mapping) (parse stream)
     (let* ((end-pred (lambda (cur) (char= #\Z (char cur 2))))
            (all-steps (loop :for start :being :the :hash-keys :of mapping

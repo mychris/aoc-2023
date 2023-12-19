@@ -1,11 +1,11 @@
-(defpackage #:aoc-2023/day-1
+(defpackage #:aoc-2023/src/day-1
   (:use #:cl)
   (:export #:trebuchet-1
            #:trebuchet-2)
-  (:import-from #:aoc-2023/day-1-input
-                #:*input*))
+  (:import-from #:aoc-2023-data
+                #:*day-1-input*))
 
-(in-package #:aoc-2023/day-1)
+(in-package #:aoc-2023/src/day-1)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 1: Trebuchet?!")
@@ -28,10 +28,14 @@
 (defun find-first-last (predicate line)
   (cons (loop :for index :from 0 :below (length line)
               :for result = (funcall predicate line index)
-              :if result :return result)
+              :when result
+                :return result
+              :finally (return 0))
         (loop :for index :downfrom (1- (length line)) :to 0
               :for result = (funcall predicate line index)
-              :if result :return result)))
+              :when result
+                :return result
+              :finally (return 0))))
 
 (defun accum-digits (c)
   (+ (* 10 (car c)) (cdr c)))
@@ -40,12 +44,10 @@
   (loop :while (peek-char nil stream nil)
         :collect (find-first-last predicate (read-line stream))))
 
-(defun trebuchet-1 (&optional (stream (make-string-input-stream *input*)))
-  "55123"
+(defun trebuchet-1 (&optional (stream (make-string-input-stream *day-1-input*)))
   (reduce #'+ (map 'list #'accum-digits (parse-from-lines #'digit-at-p stream))))
 
-(defun trebuchet-2 (&optional (stream (make-string-input-stream *input*)))
-  "55260"
+(defun trebuchet-2 (&optional (stream (make-string-input-stream *day-1-input*)))
   (reduce #'+ (map 'list #'accum-digits
                    (parse-from-lines #'(lambda (line idx)
                                          (or (digit-at-p line idx)

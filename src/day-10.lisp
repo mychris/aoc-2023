@@ -1,11 +1,11 @@
-(defpackage #:aoc-2023/day-10
+(defpackage #:aoc-2023/src/day-10
   (:use #:cl)
   (:export #:pipe-maze-1
            #:pipe-maze-2)
-  (:import-from #:aoc-2023/day-10-input
-                #:*input*))
+  (:import-from #:aoc-2023-data
+                #:*day-10-input*))
 
-(in-package #:aoc-2023/day-10)
+(in-package #:aoc-2023/src/day-10)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 10: Pipe Maze")
@@ -124,12 +124,10 @@
                   :do (setf (aref result new-pos) (aref maze old-pos)))
         :finally (return result)))
 
-(defun pipe-maze-1 (&optional (stream (make-string-input-stream *input*)))
-  "7145"
+(defun pipe-maze-1 (&optional (stream (make-string-input-stream *day-10-input*)))
   (/ (length (multiple-value-call #'find-loop (parse stream))) 2))
 
-(defun pipe-maze-2 (&optional (stream (make-string-input-stream *input*)))
-  "445"
+(defun pipe-maze-2 (&optional (stream (make-string-input-stream *day-10-input*)))
   (multiple-value-bind (maze width height) (parse stream)
     (let* ((cells-in-loop-lookup
              (loop :with result = (make-array (length maze) :initial-element nil

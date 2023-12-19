@@ -1,11 +1,11 @@
-(defpackage #:aoc-2023/day-3
+(defpackage #:aoc-2023/src/day-3
   (:use #:cl)
   (:export #:gear-ratios-1
            #:gear-ratios-2)
-  (:import-from #:aoc-2023/day-3-input
-                #:*input*))
+  (:import-from #:aoc-2023-data
+                #:*day-3-input*))
 
-(in-package #:aoc-2023/day-3)
+(in-package #:aoc-2023/src/day-3)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 3: Gear Ratios")
@@ -59,17 +59,15 @@
       (parse-schematic stream)
     (reduce #'+ (funcall fun schematic width height))))
 
-(defun gear-ratios-1 (&optional stream)
-  "509115"
+(defun gear-ratios-1 (&optional (stream (make-string-input-stream *day-3-input*)))
   (sum-parts-from (lambda (schematic width height)
                     (map-symbols (lambda (symbol numbers-around)
                                    (declare (ignore symbol))
                                    (reduce #'+ numbers-around))
                                  schematic width height))
-                  (or stream (make-string-input-stream *input*))))
+                  stream))
 
-(defun gear-ratios-2 (&optional stream)
-  "75220503"
+(defun gear-ratios-2 (&optional (stream (make-string-input-stream *day-3-input*)))
   (sum-parts-from (lambda (schematic width height)
                     (map-symbols (lambda (symbol numbers-around)
                                    (if (or (char/= #\* symbol)
@@ -77,4 +75,4 @@
                                          0
                                          (* (nth 0 numbers-around) (nth 1 numbers-around))))
                                  schematic width height))
-                  (or stream (make-string-input-stream *input*))))
+                  stream))

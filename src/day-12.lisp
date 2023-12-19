@@ -1,11 +1,11 @@
-(defpackage #:aoc-2023/day-12
+(defpackage #:aoc-2023/src/day-12
   (:use #:cl)
   (:export #:hot-springs-1
            #:hot-springs-2)
-  (:import-from #:aoc-2023/day-12-input
-                #:*input*))
+  (:import-from #:aoc-2023-data
+                #:*day-12-input*))
 
-(in-package #:aoc-2023/day-12)
+(in-package #:aoc-2023/src/day-12)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 12: Hot Springs")
@@ -83,10 +83,8 @@
   (loop :for (row . conditions) :in input
         :sum (calculate-arrangements-rec row conditions)))
 
-(defun hot-springs-1 (&optional (stream (make-string-input-stream *input*)))
-  "8180"
+(defun hot-springs-1 (&optional (stream (make-string-input-stream *day-12-input*)))
   (sum-arrangements (parse stream 1)))
 
-(defun hot-springs-2 (&optional (stream (make-string-input-stream *input*)))
-  "620189727003627"
+(defun hot-springs-2 (&optional (stream (make-string-input-stream *day-12-input*)))
   (sum-arrangements (parse stream 5)))

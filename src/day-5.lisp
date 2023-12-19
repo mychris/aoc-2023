@@ -1,11 +1,11 @@
-(defpackage #:aoc-2023/day-5
+(defpackage #:aoc-2023/src/day-5
   (:use #:cl)
   (:export #:if-you-give-a-seed-a-fertilizer-1
            #:if-you-give-a-seed-a-fertilizer-2)
-  (:import-from #:aoc-2023/day-5-input
-                #:*input*))
+  (:import-from #:aoc-2023-data
+                #:*day-5-input*))
 
-(in-package #:aoc-2023/day-5)
+(in-package #:aoc-2023/src/day-5)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 5: If You Give A Seed A Fertilizer")
@@ -71,14 +71,12 @@
         :do (setq seeds (almanac-map (cdr this-mapping) seeds)))
   (reduce #'min seeds :key #'car))
 
-(defun if-you-give-a-seed-a-fertilizer-1 (&optional (stream (make-string-input-stream *input*)))
-  "157211394"
+(defun if-you-give-a-seed-a-fertilizer-1 (&optional (stream (make-string-input-stream *day-5-input*)))
   (multiple-value-bind (seeds mappings) (parse-input-from stream)
     (find-min-location mappings
                        (loop :for seed :in seeds :collect (cons seed 1)))))
 
-(defun if-you-give-a-seed-a-fertilizer-2 (&optional (stream (make-string-input-stream *input*)))
-  "50855035"
+(defun if-you-give-a-seed-a-fertilizer-2 (&optional (stream (make-string-input-stream *day-5-input*)))
   (multiple-value-bind (seeds mappings) (parse-input-from stream)
     (find-min-location mappings
                        (loop :for (start range) :on seeds :by #'cddr :collect (cons start range)))))

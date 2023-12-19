@@ -1,11 +1,11 @@
-(defpackage #:aoc-2023/day-9
+(defpackage #:aoc-2023/src/day-9
   (:use #:cl)
   (:export #:mirage-maintenance-1
            #:mirage-maintenance-2)
-  (:import-from #:aoc-2023/day-9-input
-                #:*input*))
+  (:import-from #:aoc-2023-data
+                #:*day-9-input*))
 
-(in-package #:aoc-2023/day-9)
+(in-package #:aoc-2023/src/day-9)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 9: Mirage Maintenance")
@@ -26,14 +26,12 @@
         (cons (- (car numbers) (car extrapolation))
               (+ (cdr extrapolation) (car (last numbers)))))))
 
-(defun mirage-maintenance-1 (&optional (stream (make-string-input-stream *input*)))
-  "1921197370"
+(defun mirage-maintenance-1 (&optional (stream (make-string-input-stream *day-9-input*)))
   (loop :for line = (read-line stream nil nil)
         :while line
         :sum (cdr (extrapolate (parse-line line)))))
 
-(defun mirage-maintenance-2 (&optional (stream (make-string-input-stream *input*)))
-  "1124"
+(defun mirage-maintenance-2 (&optional (stream (make-string-input-stream *day-9-input*)))
   (loop :for line = (read-line stream nil nil)
         :while line
         :sum (car (extrapolate (parse-line line)))))

@@ -1,11 +1,11 @@
-(defpackage #:aoc-2023/day-18
+(defpackage #:aoc-2023/src/day-18
   (:use #:cl)
   (:export #:lavaduct-lagoon-1
            #:lavaduct-lagoon-2)
-  (:import-from #:aoc-2023/day-18-input
-                #:*input*))
+  (:import-from #:aoc-2023-data
+                #:*day-18-input*))
 
-(in-package #:aoc-2023/day-18)
+(in-package #:aoc-2023/src/day-18)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 18: Lavaduct Lagoon")
@@ -45,10 +45,8 @@
                       2))))
     (+ 1 area (/ perimeter 2))))
 
-(defun lavaduct-lagoon-1 (&optional (stream (make-string-input-stream *input*)))
-  "72821"
+(defun lavaduct-lagoon-1 (&optional (stream (make-string-input-stream *day-18-input*)))
   (get-area (parse stream)))
 
-(defun lavaduct-lagoon-2 (&optional (stream (make-string-input-stream *input*)))
-  "127844509405501"
+(defun lavaduct-lagoon-2 (&optional (stream (make-string-input-stream *day-18-input*)))
   (get-area (fix-plan (parse stream))))

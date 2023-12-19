@@ -1,11 +1,11 @@
-(defpackage #:aoc-2023/day-14
+(defpackage #:aoc-2023/src/day-14
   (:use #:cl)
   (:export #:parabolic-reflector-dish-1
            #:parabolic-reflector-dish-2)
-  (:import-from #:aoc-2023/day-14-input
-                #:*input*))
+  (:import-from #:aoc-2023-data
+                #:*day-14-input*))
 
-(in-package #:aoc-2023/day-14)
+(in-package #:aoc-2023/src/day-14)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 14: Parabolic Reflector Dish")
@@ -82,14 +82,12 @@
                    :when (char= #\O (access matrix row col width))
                      :sum (- height row))))
 
-(defun parabolic-reflector-dish-1 (&optional (stream (make-string-input-stream *input*)))
-  "106990"
+(defun parabolic-reflector-dish-1 (&optional (stream (make-string-input-stream *day-14-input*)))
   (multiple-value-bind (matrix width height)
       (parse-string stream)
     (load-north (tilt-north matrix width height) width height)))
 
-(defun parabolic-reflector-dish-2 (&optional (stream (make-string-input-stream *input*)))
-  "100531"
+(defun parabolic-reflector-dish-2 (&optional (stream (make-string-input-stream *day-14-input*)))
   (multiple-value-bind (matrix width height)
       (parse-string stream)
     (let ((cache nil)

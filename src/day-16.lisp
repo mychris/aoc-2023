@@ -1,11 +1,11 @@
-(defpackage #:aoc-2023/day-16
+(defpackage #:aoc-2023/src/day-16
   (:use #:cl)
   (:export #:the-floor-will-be-lava-1
            #:the-floor-will-be-lava-2)
-  (:import-from #:aoc-2023/day-16-input
-                #:*input*))
+  (:import-from #:aoc-2023-data
+                #:*day-16-input*))
 
-(in-package #:aoc-2023/day-16)
+(in-package #:aoc-2023/src/day-16)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 16: The Floor Will Be Lava")
@@ -75,12 +75,10 @@
           :sum (loop :for p :across line
                      :count p))))
 
-(defun the-floor-will-be-lava-1 (&optional (stream (make-string-input-stream *input*)))
-  "7860"
+(defun the-floor-will-be-lava-1 (&optional (stream (make-string-input-stream *day-16-input*)))
   (count-energized (parse stream) 0 +1))
 
-(defun the-floor-will-be-lava-2 (&optional (stream (make-string-input-stream *input*)))
-  "8331"
+(defun the-floor-will-be-lava-2 (&optional (stream (make-string-input-stream *day-16-input*)))
   (let* ((matrix (parse stream))
          (width (length (aref matrix 0)))
          (height (length matrix)))

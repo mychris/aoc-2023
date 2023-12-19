@@ -1,11 +1,11 @@
-(defpackage #:aoc-2023/day-11
+(defpackage #:aoc-2023/src/day-11
   (:use #:cl)
   (:export #:cosmic-expansion-1
            #:cosmic-expansion-2)
-  (:import-from #:aoc-2023/day-11-input
-                #:*input*))
+  (:import-from #:aoc-2023-data
+                #:*day-11-input*))
 
-(in-package #:aoc-2023/day-11)
+(in-package #:aoc-2023/src/day-11)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 11: Cosmic Expansion")
@@ -57,12 +57,10 @@
                    :sum (measure-distance (car this-galaxy) (cdr this-galaxy)
                                           (car other) (cdr other)))))
 
-(defun cosmic-expansion-1 (&optional (stream (make-string-input-stream *input*)))
-  "9543156"
+(defun cosmic-expansion-1 (&optional (stream (make-string-input-stream *day-11-input*)))
   (let ((galaxies (cosmic-expansion (parse-image stream) 2)))
     (sum-galaxies-distances galaxies)))
 
-(defun cosmic-expansion-2 (&optional (stream (make-string-input-stream *input*)))
-  "625243292686"
+(defun cosmic-expansion-2 (&optional (stream (make-string-input-stream *day-11-input*)))
   (let ((galaxies (cosmic-expansion (parse-image stream) 1000000)))
     (sum-galaxies-distances galaxies)))

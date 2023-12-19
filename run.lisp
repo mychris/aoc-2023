@@ -1,5 +1,3 @@
-(declaim (optimize (speed 3) (debug 0) (safety 0)))
-
 (ql:quickload "aoc-2023" :verbose nil :silent t)
 
 (use-package :cl)
@@ -23,21 +21,19 @@
 (let ((start-real-time (get-internal-real-time))
       (start-run-time (get-internal-run-time)))
   (princ (format nil "~A~&" (documentation (find-package "AOC-2023") t)))
-  (loop :for package :in (get-packages
-                          (lambda (p) (and (search "AOC" (package-name p))
-                                           (search "DAY" (package-name p))
-                                           (not (search "INPUT" (package-name p))))))
-        :for symbols = (external-function-symbols package)
+  (loop :for day :upfrom 1
+        :for package = (find-package (format nil "AOC-2023/SRC/DAY-~A" day))
         :while package
-        :do (let ((r1 (funcall (first symbols)))
-                  (r2 (funcall (second symbols)))
-                  (e1 (parse-integer (or (documentation (first symbols) 'function) "0")))
-                  (e2 (parse-integer (or (documentation (second symbols) 'function) "0"))))
+        :do (let* ((symbols (external-function-symbols package))
+                   (r1 (funcall (first symbols)))
+                   (r2 (funcall (second symbols)))
+                   (expected (symbol-value (find-symbol (format nil "*DAY-~A-EXPECTED*" day)
+                                                       (find-package "AOC-2023-DATA")))))
               (princ (format nil "~A ~S~A~&"
                              (documentation package t)
                              (cons r1 r2)
-                             (if (or (/= r1 e1)
-                                     (/= r2 e2))
+                             (if (or (/= r1 (car expected))
+                                     (/= r2 (cdr expected)))
                                  " :("
                                  "")))))
   (princ (format nil "REAL-TIME: ~,3fs~&RUN-TIME:  ~,3fs~&"

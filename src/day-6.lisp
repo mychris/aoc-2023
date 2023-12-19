@@ -1,11 +1,11 @@
-(defpackage #:aoc-2023/day-6
+(defpackage #:aoc-2023/src/day-6
   (:use #:cl)
   (:export #:wait-for-it-1
            #:wait-for-it-2)
-  (:import-from #:aoc-2023/day-6-input
-                #:*input*))
+  (:import-from #:aoc-2023-data
+                #:*day-6-input*))
 
-(in-package #:aoc-2023/day-6)
+(in-package #:aoc-2023/src/day-6)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 6: Wait For It")
@@ -44,12 +44,10 @@ Binary search for the minimum time.  Then calculate the maximum from it."
 (defun solve (times distances)
   (reduce #'* (count-winning-strategies (all-winning-strategies times distances))))
 
-(defun wait-for-it-1 (&optional (stream (make-string-input-stream *input*)))
-  "840336"
+(defun wait-for-it-1 (&optional (stream (make-string-input-stream *day-6-input*)))
   (solve (parse-ints (read-line stream nil nil))
          (parse-ints (read-line stream nil nil))))
 
-(defun wait-for-it-2 (&optional (stream (make-string-input-stream *input*)))
-  "41382569"
+(defun wait-for-it-2 (&optional (stream (make-string-input-stream *day-6-input*)))
   (solve (list (concatenate-numbers (parse-ints (read-line stream nil nil))))
          (list (concatenate-numbers (parse-ints (read-line stream nil nil))))))
