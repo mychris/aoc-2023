@@ -19,7 +19,8 @@
         #:aoc-2023/src/day-16
         #:aoc-2023/src/day-17
         #:aoc-2023/src/day-18
-        #:aoc-2023/src/day-19))
+        #:aoc-2023/src/day-19
+        #:aoc-2023/src/day-20))
 
 (in-package #:aoc-2023)
 

@@ -18,7 +18,8 @@
         #:aoc-2023/examples/day-16
         #:aoc-2023/examples/day-17
         #:aoc-2023/examples/day-18
-        #:aoc-2023/examples/day-19))
+        #:aoc-2023/examples/day-19
+        #:aoc-2023/examples/day-20))
 
 (in-package #:aoc-2023-data)
 
