@@ -117,9 +117,9 @@
     (loop :for (module pulse module-from) = (pop queue)
           :while module
           :if (< 0 pulse)
-            :do (incf high-count 1);;(length (module-connected module)))
+            :do (incf high-count 1)
           :else
-            :do (incf low-count 1);;(length (module-connected module)))
+            :do (incf low-count 1)
           :do (let ((out (funcall (module-handler module) module pulse module-from)))
                 (when (/= 0 out)
                   (loop :for m2 :in (module-connected module)
