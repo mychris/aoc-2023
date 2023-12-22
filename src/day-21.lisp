@@ -1,11 +1,9 @@
-(defpackage #:aoc-2023/src/day-21
+(defpackage #:aoc-2023/day-21
   (:use #:cl)
   (:export #:step-counter-1
-           #:step-counter-2)
-  (:import-from #:aoc-2023-data
-                #:*day-21-input*))
+           #:step-counter-2))
 
-(in-package #:aoc-2023/src/day-21)
+(in-package #:aoc-2023/day-21)
 
 (declaim (optimize (speed 0) (debug 3) (safety 3)))
 (setf (documentation *package* t) "Day 21: Step Counter")
@@ -68,7 +66,7 @@
                                                 (list step-count (make-pos (1- x) y))
                                                 (list step-count (make-pos x (1- y)))))))))
 
-(defun step-counter-1 (&optional (stream (make-string-input-stream *day-21-input*)))
+(defun step-counter-1 (stream)
   (multiple-value-bind (map start)
       (parse stream)
     (flood-fill-even-odd map start)

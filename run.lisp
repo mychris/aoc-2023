@@ -18,24 +18,29 @@
           :collect s :into symbols
         :finally (return (sort symbols #'string<))))
 
+(defun run (fun input-file)
+  (if fun
+      (with-open-file (stream input-file :direction :input)
+        (funcall fun stream))
+      nil))
+
 (let ((start-real-time (get-internal-real-time))
       (start-run-time (get-internal-run-time)))
   (princ (format nil "~A~&" (documentation (find-package "AOC-2023") t)))
   (loop :for day :upfrom 1
-        :for package = (find-package (format nil "AOC-2023/SRC/DAY-~A" day))
+        :for package = (find-package (format nil "AOC-2023/DAY-~A" day))
         :while package
         :do (let* ((symbols (external-function-symbols package))
-                   (r1 (funcall (first symbols)))
-                   (r2 (funcall (second symbols)))
-                   (expected (symbol-value (find-symbol (format nil "*DAY-~A-EXPECTED*" day)
-                                                       (find-package "AOC-2023-DATA")))))
-              (princ (format nil "~A ~S~A~&"
-                             (documentation package t)
-                             (cons r1 r2)
-                             (if (or (/= r1 (car expected))
-                                     (/= r2 (cdr expected)))
-                                 " :("
-                                 "")))))
+                   (f1 (first symbols))
+                   (f2 (second symbols))
+                   (input-file (asdf:system-relative-pathname
+                                "aoc-2023"
+                                (format nil "inputs/day-~A.txt" day))))
+              (if (not (uiop:file-exists-p input-file))
+                  (princ (format nil "~A NO INPUT FOUND~&" (documentation package t)))
+                  (let ((r1 (run f1 input-file))
+                        (r2 (run f2 input-file)))
+                    (princ (format nil "~A ~S~&" (documentation package t) (cons r1 r2)))))))
   (princ (format nil "REAL-TIME: ~,3fs~&RUN-TIME:  ~,3fs~&"
                  (/ (- (get-internal-real-time) start-real-time)
                     internal-time-units-per-second)

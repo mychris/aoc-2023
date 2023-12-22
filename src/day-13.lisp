@@ -1,11 +1,9 @@
-(defpackage #:aoc-2023/src/day-13
+(defpackage #:aoc-2023/day-13
   (:use #:cl)
   (:export #:point-of-incidence-1
-           #:point-of-incidence-2)
-  (:import-from #:aoc-2023-data
-                #:*day-13-input*))
+           #:point-of-incidence-2))
 
-(in-package #:aoc-2023/src/day-13)
+(in-package #:aoc-2023/day-13)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 13: Point of Incidence")
@@ -43,12 +41,12 @@
             :return (* 100 (1+ x))
           :finally (error "Nothing found"))))
 
-(defun point-of-incidence-1 (&optional (stream (make-string-input-stream *day-13-input*)))
+(defun point-of-incidence-1 (stream)
   (loop :for matrix = (parse stream)
         :while (< 0 (length matrix))
         :sum (find-reflection matrix 0)))
 
-(defun point-of-incidence-2 (&optional (stream (make-string-input-stream *day-13-input*)))
+(defun point-of-incidence-2 (stream)
   (loop :for matrix = (parse stream)
         :while (< 0 (length matrix))
         :sum (find-reflection matrix 1)))

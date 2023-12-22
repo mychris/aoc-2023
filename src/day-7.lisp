@@ -1,11 +1,9 @@
-(defpackage #:aoc-2023/src/day-7
+(defpackage #:aoc-2023/day-7
   (:use #:cl)
   (:export #:camel-cards-1
-           #:camel-cards-2)
-  (:import-from #:aoc-2023-data
-                #:*day-7-input*))
+           #:camel-cards-2))
 
-(in-package #:aoc-2023/src/day-7)
+(in-package #:aoc-2023/day-7)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 7: Camel Cards")
@@ -73,10 +71,10 @@
         :for x :upfrom 1
         :sum (* x (nth 2 h))))
 
-(defun camel-cards-1 (&optional (stream (make-string-input-stream *day-7-input*)))
+(defun camel-cards-1 (stream)
   (calc-winnings (parse-input stream)))
 
-(defun camel-cards-2 (&optional (stream (make-string-input-stream *day-7-input*)))
+(defun camel-cards-2 (stream)
   (calc-winnings (parse-input stream (lambda (hand)
                                        (nsubstitute #\* #\J hand)
                                        hand))))

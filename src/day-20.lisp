@@ -1,11 +1,9 @@
-(defpackage #:aoc-2023/src/day-20
+(defpackage #:aoc-2023/day-20
   (:use #:cl)
   (:export #:pulse-propagation-1
-           #:pulse-propagation-2)
-  (:import-from #:aoc-2023-data
-                #:*day-20-input*))
+           #:pulse-propagation-2))
 
-(in-package #:aoc-2023/src/day-20)
+(in-package #:aoc-2023/day-20)
 
 (declaim (optimize (speed 0) (debug 3) (safety 3)))
 (setf (documentation *package* t) "Day 20: Pulse Propagation")
@@ -126,7 +124,7 @@
                         :do (setq queue (append queue (list (list (aref modules m2) out module))))))))
     (values low-count high-count)))
 
-(defun pulse-propagation-1 (&optional (stream (make-string-input-stream *day-20-input*)))
+(defun pulse-propagation-1 (stream)
   (multiple-value-bind (start modules)
       (parse stream)
     (modules-initialize-state modules)
@@ -138,5 +136,5 @@
           (incf hc high-count)))
       (* lc hc))))
 
-(defun pulse-propagation-2 (&optional (stream (make-string-input-stream *day-20-input*)))
+(defun pulse-propagation-2 (stream)
   0)

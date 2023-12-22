@@ -1,11 +1,9 @@
-(defpackage #:aoc-2023/src/day-19
+(defpackage #:aoc-2023/day-19
   (:use #:cl)
   (:export #:aplenty-1
-           #:aplenty-2)
-  (:import-from #:aoc-2023-data
-                #:*day-19-input*))
+           #:aplenty-2))
 
-(in-package #:aoc-2023/src/day-19)
+(in-package #:aoc-2023/day-19)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 19: Aplenty")
@@ -107,7 +105,7 @@
 (defun create-min-max-rating (rating min max)
   (map 'list (lambda (elem) (cons (car elem) (cons min max))) rating))
 
-(defun aplenty-1 (&optional (stream (make-string-input-stream *day-19-input*)))
+(defun aplenty-1 (stream)
   (multiple-value-bind (workflows ratings)
       (parse stream)
     (loop :for rating :in ratings
@@ -115,7 +113,7 @@
             :sum (loop :for elem :in rating
                        :sum (cdr elem)))))
 
-(defun aplenty-2 (&optional (stream (make-string-input-stream *day-19-input*)))
+(defun aplenty-2 (stream)
   (multiple-value-bind (workflows ratings)
       (parse stream)
     (let ((min-max-rating (create-min-max-rating (car ratings) 1 4000)))

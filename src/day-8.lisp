@@ -1,11 +1,9 @@
-(defpackage #:aoc-2023/src/day-8
+(defpackage #:aoc-2023/day-8
   (:use #:cl)
   (:export #:haunted-wasteland-1
-           #:haunted-wasteland-2)
-  (:import-from #:aoc-2023-data
-                #:*day-8-input*))
+           #:haunted-wasteland-2))
 
-(in-package #:aoc-2023/src/day-8)
+(in-package #:aoc-2023/day-8)
 
 (declaim (optimize (speed 0) (debug 3) (safety 3)))
 (setf (documentation *package* t) "Day 8: Haunted Wasteland")
@@ -49,12 +47,12 @@
                         :collect n
                         :do (setq x (/ x n)))))
 
-(defun haunted-wasteland-1 (&optional (stream (make-string-input-stream *day-8-input*)))
+(defun haunted-wasteland-1 (stream)
   (multiple-value-call #'count-steps "AAA" (lambda (cur) (and (char= #\Z (char cur 0))
                                                               (string= cur "ZZZ")))
     (parse stream)))
 
-(defun haunted-wasteland-2 (&optional (stream (make-string-input-stream *day-8-input*)))
+(defun haunted-wasteland-2 (stream)
   (multiple-value-bind (navigation mapping) (parse stream)
     (let* ((end-pred (lambda (cur) (char= #\Z (char cur 2))))
            (all-steps (loop :for start :being :the :hash-keys :of mapping

@@ -1,11 +1,9 @@
-(defpackage #:aoc-2023/src/day-17
+(defpackage #:aoc-2023/day-17
   (:use #:cl)
   (:export #:clumsy-crucible-1
-           #:clumsy-crucible-2)
-  (:import-from #:aoc-2023-data
-                #:*day-17-input*))
+           #:clumsy-crucible-2))
 
-(in-package #:aoc-2023/src/day-17)
+(in-package #:aoc-2023/day-17)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 17: Clumsy Crucible")
@@ -110,12 +108,12 @@
                                                                :key #'cadr
                                                                ))))))))))
 
-(defun clumsy-crucible-1 (&optional (stream (make-string-input-stream *day-17-input*)))
+(defun clumsy-crucible-1 (stream)
   (multiple-value-bind (map width)
       (parse stream)
     (find-path map width 0 (1- (length map)) 1 3)))
 
-(defun clumsy-crucible-2 (&optional (stream (make-string-input-stream *day-17-input*)))
+(defun clumsy-crucible-2 (stream)
   (multiple-value-bind (map width)
       (parse stream)
     (find-path map width 0 (1- (length map)) 4 10)))

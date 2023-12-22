@@ -1,11 +1,9 @@
-(defpackage #:aoc-2023/src/day-1
+(defpackage #:aoc-2023/day-1
   (:use #:cl)
   (:export #:trebuchet-1
-           #:trebuchet-2)
-  (:import-from #:aoc-2023-data
-                #:*day-1-input*))
+           #:trebuchet-2))
 
-(in-package #:aoc-2023/src/day-1)
+(in-package #:aoc-2023/day-1)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 1: Trebuchet?!")
@@ -44,10 +42,10 @@
   (loop :while (peek-char nil stream nil)
         :collect (find-first-last predicate (read-line stream))))
 
-(defun trebuchet-1 (&optional (stream (make-string-input-stream *day-1-input*)))
+(defun trebuchet-1 (stream)
   (reduce #'+ (map 'list #'accum-digits (parse-from-lines #'digit-at-p stream))))
 
-(defun trebuchet-2 (&optional (stream (make-string-input-stream *day-1-input*)))
+(defun trebuchet-2 (stream)
   (reduce #'+ (map 'list #'accum-digits
                    (parse-from-lines #'(lambda (line idx)
                                          (or (digit-at-p line idx)

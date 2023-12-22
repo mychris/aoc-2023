@@ -1,11 +1,9 @@
-(defpackage #:aoc-2023/src/day-15
+(defpackage #:aoc-2023/day-15
   (:use #:cl)
   (:export #:lens-library-1
-           #:lens-library-2)
-  (:import-from #:aoc-2023-data
-                #:*day-15-input*))
+           #:lens-library-2))
 
-(in-package #:aoc-2023/src/day-15)
+(in-package #:aoc-2023/day-15)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 15: Lens Library")
@@ -51,10 +49,10 @@
               (setq box (append box (list (cons label lens)))))))
     (setf (aref boxes hash-value) box)))
 
-(defun lens-library-1 (&optional (stream (make-string-input-stream *day-15-input*)))
+(defun lens-library-1 (stream)
   (parse stream :sum #'hash))
 
-(defun lens-library-2 (&optional (stream (make-string-input-stream *day-15-input*)))
+(defun lens-library-2 (stream)
   (let ((boxes (make-array +num-boxes+ :initial-element nil)))
     (parse stream :do (lambda (seq) (handle-sequence seq boxes)))
     (loop :for box :across boxes

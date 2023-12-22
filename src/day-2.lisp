@@ -1,11 +1,9 @@
-(defpackage #:aoc-2023/src/day-2
+(defpackage #:aoc-2023/day-2
   (:use #:cl)
   (:export #:cube-conundrum-1
-           #:cube-conundrum-2)
-  (:import-from #:aoc-2023-data
-                #:*day-2-input*))
+           #:cube-conundrum-2))
 
-(in-package #:aoc-2023/src/day-2)
+(in-package #:aoc-2023/day-2)
 
 (declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 2: Cube Conundrum")
@@ -50,15 +48,14 @@
         :sum (multiple-value-bind (game rounds) (split-out-game (read-line stream))
                (funcall fun game (map 'list #'parse-round (split-out-rounds rounds))))))
 
-(defun cube-conundrum-1 (&optional (stream (make-string-input-stream *day-2-input*))
-                           (config '(:red 12 :green 13 :blue 14)))
+(defun cube-conundrum-1 (stream &optional (config '(:red 12 :green 13 :blue 14)))
   (apply-sum-games-in #'(lambda (game rounds)
                           (if (every #'(lambda (round) (test-round round config)) rounds)
                               game
                               0))
                       stream))
 
-(defun cube-conundrum-2 (&optional (stream (make-string-input-stream *day-2-input*)))
+(defun cube-conundrum-2 (stream)
   (apply-sum-games-in #'(lambda (game rounds)
                           (declare (ignore game))
                           (apply #'* (remove-if #'keywordp
