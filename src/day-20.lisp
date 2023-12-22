@@ -1,7 +1,6 @@
 (defpackage #:aoc-2023/day-20
   (:use #:cl)
-  (:export #:pulse-propagation-1
-           #:pulse-propagation-2))
+  (:export #:pulse-propagation-1))
 
 (in-package #:aoc-2023/day-20)
 
@@ -135,6 +134,3 @@
           (incf lc low-count)
           (incf hc high-count)))
       (* lc hc))))
-
-(defun pulse-propagation-2 (stream)
-  0)

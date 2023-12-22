@@ -1,11 +1,10 @@
 (defpackage #:aoc-2023/day-21
   (:use #:cl)
-  (:export #:step-counter-1
-           #:step-counter-2))
+  (:export #:step-counter-1))
 
 (in-package #:aoc-2023/day-21)
 
-(declaim (optimize (speed 0) (debug 3) (safety 3)))
+(declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 21: Step Counter")
 
 (defmacro make-pos (x y) `(cons ,x ,y))
