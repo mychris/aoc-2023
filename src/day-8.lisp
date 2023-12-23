@@ -5,7 +5,7 @@
 
 (in-package #:aoc-2023/day-8)
 
-(declaim (optimize (speed 0) (debug 3) (safety 3)))
+(declaim (optimize (speed 3) (debug 0) (safety 0)))
 (setf (documentation *package* t) "Day 8: Haunted Wasteland")
 
 (defun read-node (line start)

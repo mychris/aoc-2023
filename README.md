@@ -6,7 +6,8 @@ Developed using `sbcl` but should work with every Common Lisp implementation.
 
 ```
 * (ql:quickload "aoc-2023")
-* (aoc-2023:trebuchet-1)
+* (with-open-file (stream "/path/to/input.txt")
+    (time (aoc-2023:trebuchet-1)))
 * (describe (find-package :aoc-2023) t)
 ```
 
@@ -20,11 +21,6 @@ Use `run.lisp` to run everything:
 * clasp `clasp --noinform --quit --eval '(load "run.lisp")'`
 * abcl `abcl --noinform --nosystem --batch --eval '(load "run.lisp")'`
 * allegro cl `alisp -e '(setq *load-verbose* nil)' -L ~/.clinit.cl -L run.lisp --kill`
-
-Simple benchmarking using `benchmark.lisp`:
-
-* sbcl `sbcl --noinform --non-interactive --eval '(load "benchmark.lisp")'`
-* sbcl `sbcl --noinform --non-interactive --eval '(defvar *func* "trebuchet-1")' --eval '(load "benchmark.lisp")'`
 
 # Links
 
